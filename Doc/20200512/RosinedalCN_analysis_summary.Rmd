@@ -1,0 +1,58 @@
+---
+title: "Rosinedal CN summary"
+author: "Shun Hasegawa"
+date: "12/05/2020"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# knitr::opts_chunk$set(echo = FALSE, fig.path='Figs/', dev=c('png', 'pdf'), dpi = 600)
+source("../../R/packages.R")
+load("../../Output/Data/Analysis_results.RData")
+```
+
+# Pyrolysis
+
+## Pyrolysis products
+```{r pyrolysis_product}
+knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
+knitr::kable(filter(py_prop, layer == "Humus")[, -1], caption = "Propotion of pyrolysis product for humus")
+knitr::kable(filter(py_prop, layer == "Litter")[, -1], caption = "Propotion of pyrolysis product for litter")
+knitr::kable(py_prop_CH, caption = "Propotion in carbohydrate")
+knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
+```
+
+## Pyrolysis RDA
+```{r pyrolysis_rda, results='markup'}
+knitr::kable(anova(pyr_humus_rda, nperm = 4999), caption = "RDA on pyrolysis for humus")
+knitr::kable(anova(pyr_litter_rda, nperm = 4999), caption = "RDA on pyrolysis for litter")
+```
+
+
+# NMR
+
+## NMR products
+```{r nmr_product}
+knitr::kable(filter(nmr_prop, layer == "Humus")[, -1], caption = "Propotion of NMR product for humus")
+knitr::kable(filter(nmr_prop, layer == "Litter")[, -1], caption = "Propotion of NMR product for litter")
+```
+
+## NMR RDA
+```{r nmr_rda}
+knitr::kable(anova(nmr_humus_rda, nperm = 4999), caption = "RDA on NMR for humus")
+knitr::kable(anova(nmr_litter_rda, nperm = 4999), caption = "RDA on NMR for litter")
+```
+
+
+# Carbohydrate:Lignin ratios
+```{r CLratio}
+knitr::kable(Anova(cl_leafd15N_m1, test.statistic = "F"), caption = "Carbohydrate:Ligninratio vs. leaf d15 N")
+knitr::kable(Anova(Cmass_lcr_m1, test.statistic = "F"), caption = "C mass vs. Carbohydrate:Ligninratio")
+```
+

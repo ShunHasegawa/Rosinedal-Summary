@@ -32,7 +32,7 @@ ggsavePP <- function(filename, plot, width, height, dpi = 600){
          plot     = plot,
          width    = width,
          height   = height,
-         dpi      = dip)
+         dpi      = dpi)
 }
 
 
@@ -112,4 +112,14 @@ qqresidPlot <- function(model){
   abline(h = 0, lty = "dotted")
   qqPlot(resid(model))
   par(mfrow = c(1, 1), mar = c(5.1, 4.1, 4.1, 2.1))
+}
+
+
+# Get CI
+get_ci <- function (x, ci = 0.95, ...) {
+  a <- mean(x, ...)
+  s <- sd(x, ...)
+  n <- sum(!is.na(x))
+  error <- qt(ci + (1 - ci)/2, df = n - 1) * s/sqrt(n)
+  return(error)
 }
