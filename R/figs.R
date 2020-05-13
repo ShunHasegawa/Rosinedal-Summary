@@ -56,6 +56,12 @@ cairo_pdf("Output/Figs/Leaf_d15N_distance_all.pdf", width = 6, height = 3.5)
 leafd15N_p
 dev.off()
 
+save_png600("Output/Figs/Leaf_d15N_distance_all.png", width = 6, height = 3.5)
+leafd15N_p
+dev.off()
+
+
+
 # Fig 3. Bar grph of composition of NMR and Pyrolysis products ------------
 
 # Pyrolysis
@@ -320,6 +326,10 @@ humus_rda_nmr_pyr_p
 dev.off()
 
 
+save_png600(filename = "Output/Figs/RDA_Humus.png", width = 3.5, height = 3)
+humus_rda_nmr_pyr_p
+dev.off()
+
 # . Marge litter and humus ------------------------------------------------
 rda_nmr_pyr_p <- ggarrange(litter_rda_pyrsp_p, blank_ggplot, 
                            humus_rda_pyrsp_p, blank_ggplot, 
@@ -359,6 +369,10 @@ CL_Cmass_P <- ggplot(pyr_all_raw, aes(x = CLratio, y = Cmass))+
 CL_p <- ggarrange(CL_leafd15N_P, CL_Cmass_P, ncol = 2, labels = c("(a)", "(b)"),
                   label.args = list(gp = grid::gpar(cex = 1), hjust = -.3, vjust = 1.5))
 cairo_pdf("Output/Figs/Carbohydrate_Lignin_ratio.pdf", width = 6.5, height = 3)
+CL_p
+dev.off()
+
+save_png600("Output/Figs/Carbohydrate_Lignin_ratio.png", width = 6.5, height = 3)
 CL_p
 dev.off()
 
