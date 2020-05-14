@@ -109,7 +109,6 @@ ggsavePP("Output/Figs/Transect_map", plot = site_map_p, width = 4, height = 2)
 # . Site map --------------------------------------------------------------
 
 
-# map("worldHires","Sweden", col="gray30", fill=TRUE, xlim = c(10, 25)) 
 map_xlab <- c(expression(12*degree*E),
               expression(18*degree*E),
               expression(24*degree*E))
@@ -454,15 +453,15 @@ dev.off()
 
 py_Ncomp_prop <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
   filter(grp == "N_comp") %>% 
-  select(location2, grp, comp, variable, value, layer, variable) %>% 
-  group_by(variable) %>% 
+  select(location2, grp, comp, id, value, horizon) %>% 
+  group_by(id, horizon) %>% 
   mutate(Nprop = value * 100 / sum(value)) %>% 
-  group_by(location2, comp, layer) %>% 
+  group_by(location2, comp, horizon) %>% 
   summarise(value = mean(Nprop)) %>% 
   ungroup()
 ggplot(py_Ncomp_prop, aes(x  = location2, y = value, fill = comp))+
   geom_bar(stat = "identity")+
-  facet_grid(. ~ layer)+
+  facet_grid(. ~ horizon)+
   labs(y = "Proportion (%)")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.text = element_text(size = 6))
