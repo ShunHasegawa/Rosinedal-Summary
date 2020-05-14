@@ -165,7 +165,10 @@ knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
 
 # . RDA -------------------------------------------------------------------
 
-# Litter
+
+# .. Litter ----------------------------------------------------------------
+
+# All
 pyr_litter_grp <- unique(pyr_litter_spec$grp)
 pyr_litter <- pyr_litter_spec %>%
   group_by(grp, id, leaf_d15N, location2, CNratio, layer) %>% 
@@ -176,8 +179,14 @@ pyr_litter_sp   <- decostand(select(pyr_litter, one_of(pyr_litter_grp)), method 
 pyr_litter_rda  <- rda(pyr_litter_sp ~ leaf_d15N, pyr_litter)
 anova(pyr_litter_rda, nperm = 4999)
 
+# only fertilised plots
+pyr_litter_f <- filter(pyr_litter, location2 != "control")
+pyr_litter_sp_f   <- decostand(select(pyr_litter_f, one_of(pyr_litter_grp)), method = "hellinger")
+pyr_litter_rda_f  <- rda(pyr_litter_sp_f ~ leaf_d15N, pyr_litter_f)
+anova(pyr_litter_rda_f, nperm = 4999)
 
-# Humus
+
+# .. Humus ----------------------------------------------------------------
 pyr_humus_grp <- unique(pyr_humus_spec$grp)
 pyr_humus <- pyr_humus_spec %>%
   group_by(grp, id, leaf_d15N, location2, CNratio, layer) %>% 
@@ -187,6 +196,12 @@ pyr_humus <- pyr_humus_spec %>%
 pyr_humus_sp   <- decostand(select(pyr_humus, one_of(pyr_humus_grp)), method = "hellinger")
 pyr_humus_rda  <- rda(pyr_humus_sp ~ leaf_d15N, pyr_humus)
 anova(pyr_humus_rda, nperm = 4999)
+
+# only fertilised
+pyr_humus_f <- filter(pyr_humus, location2 != "control")
+pyr_humus_sp_f   <- decostand(select(pyr_humus_f, one_of(pyr_humus_grp)), method = "hellinger")
+pyr_humus_rda_f  <- rda(pyr_humus_sp_f ~ leaf_d15N, pyr_humus_f)
+anova(pyr_humus_rda_f, nperm = 4999)
 
 
 
@@ -225,18 +240,35 @@ write.csv(nmr_prop, "Output/Tables/NMR_product.csv", row.names = FALSE)
 
 # . RDA -------------------------------------------------------------------
 
-# Litter
+# .. Litter ----------------------------------------------------------------
+
+# all
 nmr_litter <- filter(nmr_intg_raw, layer == "Litter")
 nmr_litter_sp  <- decostand(select(nmr_litter, one_of(NMR_compounds)), method = "hellinger")
 nmr_litter_rda  <- rda(nmr_litter_sp ~ leaf_d15N, nmr_litter)
 anova(nmr_litter_rda, nperm = 4999)
 
+# only fertilised plots
+nmr_litter_f <- filter(nmr_intg_raw, layer == "Litter" & treatment == "fertilised")
+nmr_litter_sp_f  <- decostand(select(nmr_litter_f, one_of(NMR_compounds)), method = "hellinger")
+nmr_litter_rda_f  <- rda(nmr_litter_sp_f ~ leaf_d15N, nmr_litter_f)
+anova(nmr_litter_rda_f, nperm = 4999)
 
-# Humus
+
+# .. Humus ----------------------------------------------------------------
+
+# all
 nmr_humus <- filter(nmr_intg_raw, layer == "Humus")
 nmr_humus_sp  <- decostand(select(nmr_humus, one_of(NMR_compounds)), method = "hellinger")
 nmr_humus_rda  <- rda(nmr_humus_sp ~ leaf_d15N, nmr_humus)
 anova(nmr_humus_rda, nperm = 4999)
+
+
+# only fertilised plots
+nmr_humus_f <- filter(nmr_intg_raw, layer == "Humus" & treatment == "fertilised")
+nmr_humus_sp_f  <- decostand(select(nmr_humus_f, one_of(NMR_compounds)), method = "hellinger")
+nmr_humus_rda_f  <- rda(nmr_humus_sp_f ~ leaf_d15N, nmr_humus_f)
+anova(nmr_humus_rda_f, nperm = 4999)
 
 
 # Others ------------------------------------------------------------------
@@ -288,6 +320,10 @@ Cmass_lcr_fm1 <- lmer(Cmass ~ CLratio + layer + (1|id),
 Anova(Cmass_lcr_fm1, test.statistic = "F")
 qqresidPlot(Cmass_lcr_fm1)
 
+
+
+# Figures ----------------------------------------------------------------
+source("R/figs.R")
 
 # Save --------------------------------------------------------------------
 save.image("Output/Data/Analysis_results.RData")
