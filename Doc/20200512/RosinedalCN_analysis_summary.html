@@ -134,11 +134,17 @@ $(document).ready(function () {
 <ul>
 <li><a href="#pyrolysis">Pyrolysis</a><ul>
 <li><a href="#pyrolysis-products">Pyrolysis products</a></li>
-<li><a href="#pyrolysis-rda">Pyrolysis RDA</a></li>
+<li><a href="#pyrolysis-rda">Pyrolysis RDA</a><ul>
+<li><a href="#l-horizon">L horizon</a></li>
+<li><a href="#fh-horizon">F/H horizon</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#nmr">NMR</a><ul>
 <li><a href="#nmr-products">NMR products</a></li>
-<li><a href="#nmr-rda">NMR RDA</a></li>
+<li><a href="#nmr-rda">NMR RDA</a><ul>
+<li><a href="#l-horizon-1">L horizon</a></li>
+<li><a href="#fh-horizon-1">F/H horizon</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#carbohydratelignin-ratios">Carbohydrate:Lignin ratios</a></li>
 <li><a href="#correlation-test">Correlation test</a><ul>
@@ -180,8 +186,6 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<p>Table: Propotion of pyrolysis product for F/H horizon</p>
-<p>location2 Aliphatic deriv. Aromatic Carbohydrate G-lignin N comp. Phenol S-lignin Others ———- —————– ——— ————- ——— ——– ——- ——— ——-</p>
 <table>
 <caption>Propotion of pyrolysis product for L horizon</caption>
 <thead>
@@ -244,6 +248,8 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
+<p>Table: Propotion of pyrolysis product for F/H horizon</p>
+<p>location2 Aliphatic deriv. Aromatic Carbohydrate G-lignin N comp. Phenol S-lignin Others ———- —————– ——— ————- ——— ——– ——- ——— ——-</p>
 <table>
 <caption>Propotion in carbohydrate</caption>
 <thead>
@@ -456,6 +462,153 @@ $(document).ready(function () {
 </div>
 <div id="pyrolysis-rda" class="section level2">
 <h2>Pyrolysis RDA</h2>
+<div id="l-horizon" class="section level3">
+<h3>L horizon</h3>
+<table>
+<caption>RDA on pyrolysis for L horizon</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Df</th>
+<th align="right">Variance</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td align="right">1</td>
+<td align="right">0.0043533</td>
+<td align="right">16.22311</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td align="right">54</td>
+<td align="right">0.0144904</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Sp scores on pyrolysis for L horizon</caption>
+<thead>
+<tr class="header">
+<th align="left">pyr_comp2</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">G-lignin</td>
+<td align="right">-0.385</td>
+</tr>
+<tr class="even">
+<td align="left">N comp.</td>
+<td align="right">-0.035</td>
+</tr>
+<tr class="odd">
+<td align="left">S-lignin</td>
+<td align="right">-0.033</td>
+</tr>
+<tr class="even">
+<td align="left">Phenol</td>
+<td align="right">-0.023</td>
+</tr>
+<tr class="odd">
+<td align="left">Aromatic</td>
+<td align="right">-0.020</td>
+</tr>
+<tr class="even">
+<td align="left">Others</td>
+<td align="right">0.005</td>
+</tr>
+<tr class="odd">
+<td align="left">Aliphatic deriv.</td>
+<td align="right">0.008</td>
+</tr>
+<tr class="even">
+<td align="left">Carbohydrate</td>
+<td align="right">0.289</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>RDA on pyrolysis for L horizon (fertilised)</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Df</th>
+<th align="right">Variance</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td align="right">1</td>
+<td align="right">0.0042449</td>
+<td align="right">12.50484</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td align="right">43</td>
+<td align="right">0.0145967</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Sp scores on pyrolysis for L horizon (fertilised)</caption>
+<thead>
+<tr class="header">
+<th align="left">pyr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">g_lignin</td>
+<td align="right">-0.356</td>
+</tr>
+<tr class="even">
+<td align="left">s_lignin</td>
+<td align="right">-0.041</td>
+</tr>
+<tr class="odd">
+<td align="left">N_comp</td>
+<td align="right">-0.035</td>
+</tr>
+<tr class="even">
+<td align="left">Phenol</td>
+<td align="right">-0.022</td>
+</tr>
+<tr class="odd">
+<td align="left">aromatic</td>
+<td align="right">-0.021</td>
+</tr>
+<tr class="even">
+<td align="left">Others</td>
+<td align="right">0.014</td>
+</tr>
+<tr class="odd">
+<td align="left">alphatic_derivative</td>
+<td align="right">0.017</td>
+</tr>
+<tr class="even">
+<td align="left">carbohydrate</td>
+<td align="right">0.272</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fh-horizon" class="section level3">
+<h3>F/H horizon</h3>
 <table>
 <caption>RDA on pyrolysis for F/H horizon</caption>
 <thead>
@@ -485,7 +638,50 @@ $(document).ready(function () {
 </tbody>
 </table>
 <table>
-<caption>RDA on pyrolysis for L horizon</caption>
+<caption>Sp scores on pyrolysis for F/H horizon</caption>
+<thead>
+<tr class="header">
+<th align="left">pyr_comp2</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">G-lignin</td>
+<td align="right">-0.244</td>
+</tr>
+<tr class="even">
+<td align="left">Phenol</td>
+<td align="right">-0.129</td>
+</tr>
+<tr class="odd">
+<td align="left">Aromatic</td>
+<td align="right">-0.075</td>
+</tr>
+<tr class="even">
+<td align="left">Others</td>
+<td align="right">-0.073</td>
+</tr>
+<tr class="odd">
+<td align="left">N comp.</td>
+<td align="right">-0.045</td>
+</tr>
+<tr class="even">
+<td align="left">S-lignin</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Aliphatic deriv.</td>
+<td align="right">0.019</td>
+</tr>
+<tr class="even">
+<td align="left">Carbohydrate</td>
+<td align="right">0.198</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>RDA on pyrolysis for F/H horizon (fertilised)</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -499,27 +695,69 @@ $(document).ready(function () {
 <tr class="odd">
 <td>Model</td>
 <td align="right">1</td>
-<td align="right">0.0043533</td>
-<td align="right">16.22311</td>
+<td align="right">0.0012676</td>
+<td align="right">11.18704</td>
 <td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td>Residual</td>
-<td align="right">54</td>
-<td align="right">0.0144904</td>
+<td align="right">43</td>
+<td align="right">0.0048721</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 </tbody>
 </table>
+<table>
+<caption>Sp scores on pyrolysis for F/H horizon (fertilised)</caption>
+<thead>
+<tr class="header">
+<th align="left">pyr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">g_lignin</td>
+<td align="right">-0.206</td>
+</tr>
+<tr class="even">
+<td align="left">Phenol</td>
+<td align="right">-0.125</td>
+</tr>
+<tr class="odd">
+<td align="left">Others</td>
+<td align="right">-0.082</td>
+</tr>
+<tr class="even">
+<td align="left">aromatic</td>
+<td align="right">-0.080</td>
+</tr>
+<tr class="odd">
+<td align="left">N_comp</td>
+<td align="right">-0.046</td>
+</tr>
+<tr class="even">
+<td align="left">s_lignin</td>
+<td align="right">-0.003</td>
+</tr>
+<tr class="odd">
+<td align="left">alphatic_derivative</td>
+<td align="right">0.009</td>
+</tr>
+<tr class="even">
+<td align="left">carbohydrate</td>
+<td align="right">0.184</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="nmr" class="section level1">
 <h1>NMR</h1>
 <div id="nmr-products" class="section level2">
 <h2>NMR products</h2>
-<p>Table: Propotion of NMR product for F/H horizon</p>
-<p>location2 Alkyl C Methoxy/N-alkyl C O-alkyl C Di-O-alkylC Aromatic C O-aromatic C Carbonyl C ———- ——– —————— ———- ———— ———– ————- ———–</p>
 <table>
 <caption>Propotion of NMR product for L horizon</caption>
 <thead>
@@ -577,37 +815,13 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
+<p>Table: Propotion of NMR product for F/H horizon</p>
+<p>location2 Alkyl C Methoxy/N-alkyl C O-alkyl C Di-O-alkylC Aromatic C O-aromatic C Carbonyl C ———- ——– —————— ———- ———— ———– ————- ———–</p>
 </div>
 <div id="nmr-rda" class="section level2">
 <h2>NMR RDA</h2>
-<table>
-<caption>RDA on NMR for F/H horizon</caption>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">Df</th>
-<th align="right">Variance</th>
-<th align="right">F</th>
-<th align="right">Pr(&gt;F)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Model</td>
-<td align="right">1</td>
-<td align="right">0.0002189</td>
-<td align="right">6.976843</td>
-<td align="right">0.006</td>
-</tr>
-<tr class="even">
-<td>Residual</td>
-<td align="right">54</td>
-<td align="right">0.0016943</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
+<div id="l-horizon-1" class="section level3">
+<h3>L horizon</h3>
 <table>
 <caption>RDA on NMR for L horizon</caption>
 <thead>
@@ -625,7 +839,7 @@ $(document).ready(function () {
 <td align="right">1</td>
 <td align="right">0.0003310</td>
 <td align="right">6.521308</td>
-<td align="right">0.002</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td>Residual</td>
@@ -636,6 +850,250 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
+<table>
+<caption>Sp scores on RDA for L horizon</caption>
+<thead>
+<tr class="header">
+<th align="left">nmr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">aromatic</td>
+<td align="right">-0.128</td>
+</tr>
+<tr class="even">
+<td align="left">meth_N_alkylC</td>
+<td align="right">-0.103</td>
+</tr>
+<tr class="odd">
+<td align="left">O_aromaticC</td>
+<td align="right">-0.070</td>
+</tr>
+<tr class="even">
+<td align="left">carbonylC</td>
+<td align="right">0.003</td>
+</tr>
+<tr class="odd">
+<td align="left">alkylC</td>
+<td align="right">0.020</td>
+</tr>
+<tr class="even">
+<td align="left">di_O_alkylC</td>
+<td align="right">0.058</td>
+</tr>
+<tr class="odd">
+<td align="left">O_alkylC</td>
+<td align="right">0.093</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>RDA on NMR for L horizon (only fertilised plots)</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Df</th>
+<th align="right">Variance</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td align="right">1</td>
+<td align="right">0.0003229</td>
+<td align="right">5.558094</td>
+<td align="right">0.008</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td align="right">43</td>
+<td align="right">0.0024979</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Sp scores on RDA for L horizon (fertilised plots)</caption>
+<thead>
+<tr class="header">
+<th align="left">nmr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">aromatic</td>
+<td align="right">-0.117</td>
+</tr>
+<tr class="even">
+<td align="left">meth_N_alkylC</td>
+<td align="right">-0.104</td>
+</tr>
+<tr class="odd">
+<td align="left">O_aromaticC</td>
+<td align="right">-0.061</td>
+</tr>
+<tr class="even">
+<td align="left">carbonylC</td>
+<td align="right">0.002</td>
+</tr>
+<tr class="odd">
+<td align="left">alkylC</td>
+<td align="right">0.010</td>
+</tr>
+<tr class="even">
+<td align="left">di_O_alkylC</td>
+<td align="right">0.060</td>
+</tr>
+<tr class="odd">
+<td align="left">O_alkylC</td>
+<td align="right">0.092</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fh-horizon-1" class="section level3">
+<h3>F/H horizon</h3>
+<table>
+<caption>RDA on NMR for F/H horizon</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Df</th>
+<th align="right">Variance</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td align="right">1</td>
+<td align="right">0.0002189</td>
+<td align="right">6.976843</td>
+<td align="right">0.003</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td align="right">54</td>
+<td align="right">0.0016943</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Sp scores on RDA for F/H horizon</caption>
+<thead>
+<tr class="header">
+<th align="left">nmr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">aromatic</td>
+<td align="right">-0.092</td>
+</tr>
+<tr class="even">
+<td align="left">meth_N_alkylC</td>
+<td align="right">-0.086</td>
+</tr>
+<tr class="odd">
+<td align="left">carbonylC</td>
+<td align="right">-0.041</td>
+</tr>
+<tr class="even">
+<td align="left">alkylC</td>
+<td align="right">-0.038</td>
+</tr>
+<tr class="odd">
+<td align="left">O_aromaticC</td>
+<td align="right">-0.026</td>
+</tr>
+<tr class="even">
+<td align="left">di_O_alkylC</td>
+<td align="right">0.072</td>
+</tr>
+<tr class="odd">
+<td align="left">O_alkylC</td>
+<td align="right">0.111</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>RDA on NMR for F/H horizon (only fertilised plots)</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Df</th>
+<th align="right">Variance</th>
+<th align="right">F</th>
+<th align="right">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Model</td>
+<td align="right">1</td>
+<td align="right">0.0002847</td>
+<td align="right">8.007454</td>
+<td align="right">0.004</td>
+</tr>
+<tr class="even">
+<td>Residual</td>
+<td align="right">43</td>
+<td align="right">0.0015287</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>Sp scores on RDA for F/H horizon (fertilised plots)</caption>
+<thead>
+<tr class="header">
+<th align="left">nmr_comp</th>
+<th align="right">RDA1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">aromatic</td>
+<td align="right">-0.088</td>
+</tr>
+<tr class="even">
+<td align="left">meth_N_alkylC</td>
+<td align="right">-0.086</td>
+</tr>
+<tr class="odd">
+<td align="left">alkylC</td>
+<td align="right">-0.065</td>
+</tr>
+<tr class="even">
+<td align="left">carbonylC</td>
+<td align="right">-0.042</td>
+</tr>
+<tr class="odd">
+<td align="left">O_aromaticC</td>
+<td align="right">-0.021</td>
+</tr>
+<tr class="even">
+<td align="left">di_O_alkylC</td>
+<td align="right">0.081</td>
+</tr>
+<tr class="odd">
+<td align="left">O_alkylC</td>
+<td align="right">0.127</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="carbohydratelignin-ratios" class="section level1">
