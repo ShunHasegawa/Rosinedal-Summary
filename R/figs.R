@@ -182,12 +182,13 @@ nmr_prop_p <- ggplot(nmr_intg_smmry, aes(x = location2, y = prop, fill = grp))+
         strip.text.x      = element_blank(),
         legend.title      = element_blank(),
         legend.text.align = 0)
-nmr_prop_p
+# nmr_prop_p
 
 # combine
 comp_prop_p <- ggarrange(pyr_prop_p, nmr_prop_p, nrow = 2, labels = c("(a)", "(b)"),
-                         label.args = list(gp = grid::gpar(cex = 1), hjust = -.3, vjust = 1.5))
-comp_prop_p
+                         label.args = list(gp = grid::gpar(cex = 1), hjust = -.3, vjust = 1.5),
+                         draw = FALSE)
+# comp_prop_p
 ggsavePP("Output/Figs/Composition_Pyr_NMR", plot = comp_prop_p,
          width = 6.5, height = 5)
 
@@ -293,7 +294,8 @@ blank_ggplot <- ggplot() +
 
 # merge the above plots
 litter_rda_nmr_pyr_p <- ggarrange(litter_rda_pyrsp_p, blank_ggplot, litter_rda_p, litter_rda_nmrsp_p,  
-                                  ncol = 2, widths = c(2, .9), heights = c(.63, 2))
+                                  ncol = 2, widths = c(2, .9), heights = c(.63, 2),
+                                  draw = FALSE)
 cairo_pdf(filename = "Output/Figs/RDA_Litter.pdf", width = 3.5, height = 3)
 litter_rda_nmr_pyr_p
 dev.off()
@@ -387,11 +389,11 @@ humus_rda_pyrsp_p <- ggplot(pyr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.1, label =
 
 # merge the above plots
 humus_rda_nmr_pyr_p <- ggarrange(humus_rda_pyrsp_p, blank_ggplot, humus_rda_p, humus_rda_nmrsp_p,  
-                                 ncol = 2, widths = c(2, .9), heights = c(.63, 2))
+                                 ncol = 2, widths = c(2, .9), heights = c(.63, 2),
+                                 draw = FALSE)
 cairo_pdf(filename = "Output/Figs/RDA_Humus.pdf", width = 3.5, height = 3)
 humus_rda_nmr_pyr_p
 dev.off()
-
 
 save_png600(filename = "Output/Figs/RDA_Humus.png", width = 3.5, height = 3)
 humus_rda_nmr_pyr_p
@@ -404,8 +406,9 @@ rda_nmr_pyr_p <- ggarrange(litter_rda_pyrsp_p, blank_ggplot,
                            humus_rda_p, humus_rda_nmrsp_p, 
                            ncol = 4, widths = c(2, .9, 2, .9), heights = c(.63, 2),
                            labels = c("(a) L horizon", "", "(b) F/H horizon", rep("", 5)),
-                           label.args = list(gp = grid::gpar(cex = 1), hjust = -.1, vjust = 1.5))
-cairo_pdf(filename = "Output/Figs/RDA_Pyr_NMR_v2.pdf", width = 6.5, height = 3)
+                           label.args = list(gp = grid::gpar(cex = 1), hjust = -.1, vjust = 1.5),
+                           draw = FALSE)
+cairo_pdf(filename = "Output/Figs/RDA_Pyr_NMR.pdf", width = 6.5, height = 3)
 rda_nmr_pyr_p
 dev.off()
 
@@ -423,7 +426,11 @@ CL_leafd15N_P <- ggplot(pyr_all_raw, aes(x = leaf_d15N, y = CLratio))+
        y = "Carbohydrate:Lignin ratio")+
   science_theme+
   theme(legend.position = c(.75, .9))
-cairo_pdf("Output/Figs/Carbohydrate_Lignin_ratio_leafd15N.pdf", width = 3, height = 3)
+cairo_pdf("Output/Figs/Carbohydrate_Lignin_ratio_leafd15N.pdf", width = 4, height = 3)
+CL_leafd15N_P
+dev.off()
+
+cairo_ps("Output/Figs/Carbohydrate_Lignin_ratio_leafd15N.eps", width = 4, height = 3)
 CL_leafd15N_P
 dev.off()
 
