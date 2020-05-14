@@ -23,3 +23,4 @@ library(performance) # https://easystats.github.io/performance/index.html
 library(RColorBrewer)
 library(vegan)
 library(egg)
+library(mapdata)
