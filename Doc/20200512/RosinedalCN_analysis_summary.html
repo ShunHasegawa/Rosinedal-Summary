@@ -141,6 +141,11 @@ $(document).ready(function () {
 <li><a href="#nmr-rda">NMR RDA</a></li>
 </ul></li>
 <li><a href="#carbohydratelignin-ratios">Carbohydrate:Lignin ratios</a></li>
+<li><a href="#correlation-test">Correlation test</a><ul>
+<li><a href="#leaf-d15n-vs.n-compound">Leaf d15N vs. N compound</a></li>
+<li><a href="#soil-cn-ratio-vs.n-compound">Soil C:N ratio vs. N compound</a></li>
+<li><a href="#cmass-ratio-vs.carbohydratelignin-ratio">Cmass ratio vs. Carbohydrate:Lignin ratio</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -153,8 +158,8 @@ $(document).ready(function () {
 <thead>
 <tr class="header">
 <th align="left">grp</th>
-<th align="right">Litter</th>
-<th align="right">Humus</th>
+<th align="right">L horizon</th>
+<th align="right">F/H horizon</th>
 </tr>
 </thead>
 <tbody>
@@ -175,70 +180,10 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
+<p>Table: Propotion of pyrolysis product for F/H horizon</p>
+<p>location2 Aliphatic deriv. Aromatic Carbohydrate G-lignin N comp. Phenol S-lignin Others ———- —————– ——— ————- ——— ——– ——- ——— ——-</p>
 <table>
-<caption>Propotion of pyrolysis product for humus</caption>
-<thead>
-<tr class="header">
-<th align="left">location2</th>
-<th align="left">Aliphatic deriv.</th>
-<th align="left">Aromatic</th>
-<th align="left">Carbohydrate</th>
-<th align="left">G-lignin</th>
-<th align="left">N comp.</th>
-<th align="left">Phenol</th>
-<th align="left">S-lignin</th>
-<th align="left">Others</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">control</td>
-<td align="left">9.5[1.44]</td>
-<td align="left">1.82[0.23]</td>
-<td align="left">64[2.25]</td>
-<td align="left">15.41[3.14]</td>
-<td align="left">1.96[0.27]</td>
-<td align="left">2.53[0.16]</td>
-<td align="left">0.22[0.07]</td>
-<td align="left">4.56[0.35]</td>
-</tr>
-<tr class="even">
-<td align="left">fertilised:outside</td>
-<td align="left">9.08[1.08]</td>
-<td align="left">1.64[0.17]</td>
-<td align="left">65.09[1.49]</td>
-<td align="left">15.17[1.04]</td>
-<td align="left">2.06[0.23]</td>
-<td align="left">2.5[0.36]</td>
-<td align="left">0.26[0.11]</td>
-<td align="left">4.19[0.62]</td>
-</tr>
-<tr class="odd">
-<td align="left">fertilised:edge</td>
-<td align="left">8.82[1.18]</td>
-<td align="left">1.91[0.2]</td>
-<td align="left">59.78[2.15]</td>
-<td align="left">19.18[2.29]</td>
-<td align="left">2.2[0.26]</td>
-<td align="left">3.39[0.77]</td>
-<td align="left">0.2[0.04]</td>
-<td align="left">4.51[0.52]</td>
-</tr>
-<tr class="even">
-<td align="left">fertilised:inside</td>
-<td align="left">9.32[1.3]</td>
-<td align="left">2.19[0.21]</td>
-<td align="left">57.01[1.42]</td>
-<td align="left">19.87[1.97]</td>
-<td align="left">2.35[0.22]</td>
-<td align="left">3.74[0.63]</td>
-<td align="left">0.24[0.05]</td>
-<td align="left">5.27[0.35]</td>
-</tr>
-</tbody>
-</table>
-<table>
-<caption>Propotion of pyrolysis product for litter</caption>
+<caption>Propotion of pyrolysis product for L horizon</caption>
 <thead>
 <tr class="header">
 <th align="left">location2</th>
@@ -512,7 +457,7 @@ $(document).ready(function () {
 <div id="pyrolysis-rda" class="section level2">
 <h2>Pyrolysis RDA</h2>
 <table>
-<caption>RDA on pyrolysis for humus</caption>
+<caption>RDA on pyrolysis for F/H horizon</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -540,7 +485,7 @@ $(document).ready(function () {
 </tbody>
 </table>
 <table>
-<caption>RDA on pyrolysis for litter</caption>
+<caption>RDA on pyrolysis for L horizon</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -573,65 +518,10 @@ $(document).ready(function () {
 <h1>NMR</h1>
 <div id="nmr-products" class="section level2">
 <h2>NMR products</h2>
+<p>Table: Propotion of NMR product for F/H horizon</p>
+<p>location2 Alkyl C Methoxy/N-alkyl C O-alkyl C Di-O-alkylC Aromatic C O-aromatic C Carbonyl C ———- ——– —————— ———- ———— ———– ————- ———–</p>
 <table>
-<caption>Propotion of NMR product for humus</caption>
-<thead>
-<tr class="header">
-<th align="left">location2</th>
-<th align="left">Alkyl C</th>
-<th align="left">Methoxy/N-alkyl C</th>
-<th align="left">O-alkyl C</th>
-<th align="left">Di-O-alkylC</th>
-<th align="left">Aromatic C</th>
-<th align="left">O-aromatic C</th>
-<th align="left">Carbonyl C</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">control</td>
-<td align="left">30.38[2.5]</td>
-<td align="left">5.05[0.34]</td>
-<td align="left">33.64[1.46]</td>
-<td align="left">9.71[0.44]</td>
-<td align="left">10.27[0.99]</td>
-<td align="left">6.85[0.5]</td>
-<td align="left">4.09[0.13]</td>
-</tr>
-<tr class="even">
-<td align="left">fertilised:outside</td>
-<td align="left">29.28[1.07]</td>
-<td align="left">4.87[0.13]</td>
-<td align="left">35.36[0.92]</td>
-<td align="left">10.15[0.26]</td>
-<td align="left">9.63[0.34]</td>
-<td align="left">6.58[0.2]</td>
-<td align="left">4.14[0.15]</td>
-</tr>
-<tr class="odd">
-<td align="left">fertilised:edge</td>
-<td align="left">28.8[2.05]</td>
-<td align="left">5.26[0.25]</td>
-<td align="left">34.57[1.04]</td>
-<td align="left">9.9[0.31]</td>
-<td align="left">10.35[0.61]</td>
-<td align="left">6.9[0.34]</td>
-<td align="left">4.21[0.15]</td>
-</tr>
-<tr class="even">
-<td align="left">fertilised:inside</td>
-<td align="left">31.13[1.86]</td>
-<td align="left">5.55[0.22]</td>
-<td align="left">32.37[1.17]</td>
-<td align="left">9.18[0.4]</td>
-<td align="left">10.57[0.42]</td>
-<td align="left">6.76[0.2]</td>
-<td align="left">4.44[0.18]</td>
-</tr>
-</tbody>
-</table>
-<table>
-<caption>Propotion of NMR product for litter</caption>
+<caption>Propotion of NMR product for L horizon</caption>
 <thead>
 <tr class="header">
 <th align="left">location2</th>
@@ -691,7 +581,7 @@ $(document).ready(function () {
 <div id="nmr-rda" class="section level2">
 <h2>NMR RDA</h2>
 <table>
-<caption>RDA on NMR for humus</caption>
+<caption>RDA on NMR for F/H horizon</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -719,7 +609,7 @@ $(document).ready(function () {
 </tbody>
 </table>
 <table>
-<caption>RDA on NMR for litter</caption>
+<caption>RDA on NMR for L horizon</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -785,41 +675,120 @@ $(document).ready(function () {
 </tr>
 </tbody>
 </table>
-<table>
-<caption>C mass vs. Carbohydrate:Ligninratio</caption>
-<thead>
-<tr class="header">
-<th></th>
-<th align="right">F</th>
-<th align="right">Df</th>
-<th align="right">Df.res</th>
-<th align="right">Pr(&gt;F)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>CLratio</td>
-<td align="right">6.951200</td>
-<td align="right">1</td>
-<td align="right">107.75250</td>
-<td align="right">0.0096134</td>
-</tr>
-<tr class="even">
-<td>layer</td>
-<td align="right">18.757173</td>
-<td align="right">1</td>
-<td align="right">67.22903</td>
-<td align="right">0.0000506</td>
-</tr>
-<tr class="odd">
-<td>CLratio:layer</td>
-<td align="right">2.171597</td>
-<td align="right">1</td>
-<td align="right">61.07300</td>
-<td align="right">0.1457160</td>
-</tr>
-</tbody>
-</table>
+</div>
+<div id="correlation-test" class="section level1">
+<h1>Correlation test</h1>
+<div id="leaf-d15n-vs.n-compound" class="section level2">
+<h2>Leaf d15N vs. N compound</h2>
+<pre><code>## $`L horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$leaf_d15N and x$N_comp
+## t = 3.5444, df = 54, p-value = 0.0008214
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.1936520 0.6258546
+## sample estimates:
+##      cor 
+## 0.434435 
+## 
+## 
+## $`F/H horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$leaf_d15N and x$N_comp
+## t = 2.3982, df = 54, p-value = 0.01996
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.05155599 0.52992816
+## sample estimates:
+##       cor 
+## 0.3102513 
+## 
+## 
+## attr(,&quot;split_type&quot;)
+## [1] &quot;data.frame&quot;
+## attr(,&quot;split_labels&quot;)
+##       horizon
+## 1   L horizon
+## 2 F/H horizon</code></pre>
+</div>
+<div id="soil-cn-ratio-vs.n-compound" class="section level2">
+<h2>Soil C:N ratio vs. N compound</h2>
+<pre><code>## $`L horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$CNratio and x$N_comp
+## t = -9.7361, df = 54, p-value = 1.747e-13
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.8770342 -0.6774185
+## sample estimates:
+##      cor 
+## -0.79817 
+## 
+## 
+## $`F/H horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$CNratio and x$N_comp
+## t = -6.4851, df = 54, p-value = 2.818e-08
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.7875832 -0.4827710
+## sample estimates:
+##        cor 
+## -0.6616894 
+## 
+## 
+## attr(,&quot;split_type&quot;)
+## [1] &quot;data.frame&quot;
+## attr(,&quot;split_labels&quot;)
+##       horizon
+## 1   L horizon
+## 2 F/H horizon</code></pre>
+</div>
+<div id="cmass-ratio-vs.carbohydratelignin-ratio" class="section level2">
+<h2>Cmass ratio vs. Carbohydrate:Lignin ratio</h2>
+<pre><code>## $`L horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$Cmass and x$CLratio
+## t = -2.4716, df = 54, p-value = 0.01664
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.53671130 -0.06100537
+## sample estimates:
+##       cor 
+## -0.318793 
+## 
+## 
+## $`F/H horizon`
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  x$Cmass and x$CLratio
+## t = -2.6563, df = 54, p-value = 0.01037
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.55338787 -0.08460527
+## sample estimates:
+##        cor 
+## -0.3399445 
+## 
+## 
+## attr(,&quot;split_type&quot;)
+## [1] &quot;data.frame&quot;
+## attr(,&quot;split_labels&quot;)
+##       horizon
+## 1   L horizon
+## 2 F/H horizon</code></pre>
+</div>
 </div>
 
 

@@ -21,10 +21,12 @@ irms_lingon_ful <- irms_lingon_raw %>%
   left_join(transect_cor)
 irms_dd <- irms_res %>% 
   filter(id %in% use_id & layer %in% c("Litter", "Humus")) %>% 
-  mutate(layer = factor(layer, levels = c("Litter", "Humus")))
+  mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")))
 pyr_litter_raw <- pyr_litter_raw_area %>% 
   filter(id %in% use_id) %>% 
   mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")),
          grp = ifelse(grp %in% c("carboxylic_acid", "ketone", "n_alkane", "n_alkene", "other_aliphatics"), "alphatic_derivative", 
                       ifelse(grp %in% c("chlorophyll", "vitamin", "steroid", "hopanoid"), "Others",
                              as.character(grp)))) %>% 
@@ -32,25 +34,27 @@ pyr_litter_raw <- pyr_litter_raw_area %>%
 pyr_humus_raw <- pyr_humus_raw_area %>% 
   filter(id %in% use_id) %>% 
   mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")),
          grp = ifelse(grp %in% c("carboxylic_acid", "ketone", "n_alkane", "n_alkene", "other_aliphatics"), "alphatic_derivative", 
                       ifelse(grp %in% c("chlorophyll", "vitamin", "steroid", "hopanoid"), "Others",
                              as.character(grp)))) %>% 
   left_join(irms_dd)
 nmr_intg_raw <- nmr_intg_raw %>% 
-  mutate(layer = factor(layer, levels = c("Litter", "Humus")))
+  mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")))
 
 # Pyrolysis ---------------------------------------------------------------
 
 # unknown and biproducts
 pyr_unk_bip_prop <- bind_rows(pyr_litter_raw, pyr_humus_raw) %>% 
-  group_by(grp, layer) %>% 
+  group_by(grp, horizon, horizon) %>% 
   summarise(area = sum(area)) %>% 
-  group_by(layer) %>% 
+  group_by(horizon) %>% 
   mutate(prop = (area / sum(area)) * 100,
          prop = round(prop, 2)) %>% 
   filter(grp %in% c("co2", "Acetic acid", "unknown")) %>% 
   select(-area) %>% 
-  spread(layer, prop)
+  spread(horizon, prop)
 knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
 
 
@@ -76,10 +80,10 @@ pyr_comp_ed <- c("Aliphatic deriv.", "Aromatic", "Carbohydrate", "G-lignin", "N 
 
 # All
 py_prop <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
-  select(grp, comp, id, value, layer, location2) %>% 
-  group_by(grp, layer, location2, id) %>% 
+  select(grp, comp, id, value, layer, location2, horizon) %>% 
+  group_by(grp, layer, horizon, location2, id) %>% 
   summarise(value = sum(value) * 100) %>% 
-  group_by(grp, layer, location2) %>% 
+  group_by(grp, layer, location2, horizon) %>% 
   summarise_at(.vars = vars(value), .funs = funs(M = mean, CI = get_ci)) %>% 
   ungroup() %>% 
   mutate(value = paste0(round(M, 2), "[", round(CI, 2), ']'),
@@ -88,10 +92,10 @@ py_prop <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>%
                             "g_lignin", "N_comp", "Phenol", "s_lignin", "Others"),
                           pyr_comp_ed),
          grp2 = factor(grp2, levels = pyr_comp_ed)) %>% 
-  select(layer, location2, grp2, value) %>% 
+  select(horizon, location2, grp2, value) %>% 
   spread(grp2, value)
-knitr::kable(filter(py_prop, layer == "Humus")[, -1], caption = "Propotion of pyrolysis product for humus")
-knitr::kable(filter(py_prop, layer == "Litter")[, -1], caption = "Propotion of pyrolysis product for litter")
+knitr::kable(filter(py_prop, horizon  == "F/H horizon")[, -1], caption = "Propotion of pyrolysis product for humus")
+knitr::kable(filter(py_prop, horizon  == "L horizon")[, -1], caption = "Propotion of pyrolysis product for litter")
 write.csv(py_prop, "Output/Tables/Pyrolysis_product.csv", row.names = FALSE)
 
 # Carbohydrate
@@ -193,16 +197,18 @@ nmr_comp_ed <- c("Alkyl C", "Methoxy/N-alkyl C", "O-alkyl C", "Di-O-alkylC", "Ar
 nmr_intg_smmry <- nmr_intg_raw %>% 
   gather(key = compound, prop, one_of(NMR_compounds)) %>% 
   mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")),
          compound = factor(compound, levels = NMR_compounds)) %>% 
-  group_by(layer, location2, treatment, compound) %>% 
+  group_by(layer, horizon, location2, treatment, compound) %>% 
   summarise(prop = mean(prop)) %>% 
   ungroup()
 
 nmr_prop <- nmr_intg_raw %>% 
   gather(key = compound, prop, one_of(NMR_compounds)) %>% 
   mutate(layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")),
          compound = factor(compound, levels = NMR_compounds)) %>% 
-  group_by(layer, location2, treatment, compound) %>% 
+  group_by(layer, horizon, location2, treatment, compound) %>% 
   summarise_at(.vars = vars(prop), .funs = funs(M = mean, CI = get_ci)) %>% 
   ungroup() %>% 
   mutate(value = paste0(round(M, 2), "[", round(CI, 2), ']'),
@@ -210,11 +216,11 @@ nmr_prop <- nmr_intg_raw %>%
                               c("alkylC", "meth_N_alkylC", "O_alkylC", "di_O_alkylC", "aromatic", "O_aromaticC", "carbonylC"),
                               nmr_comp_ed),
          compound2 = factor(compound2, levels = nmr_comp_ed)) %>% 
-  select(layer, location2, compound2, value) %>% 
+  select(horizon, location2, compound2, value) %>% 
   spread(compound2, value)
-knitr::kable(filter(nmr_prop, layer == "Humus")[, -1], caption = "Propotion of NMR product for humus")
-knitr::kable(filter(nmr_prop, layer == "Litter")[, -1], caption = "Propotion of NMR product for litter")
-write.csv(py_prop, "Output/Tables/NMR_product.csv", row.names = FALSE)
+knitr::kable(filter(nmr_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of NMR product for the F/H horizon")
+knitr::kable(filter(nmr_prop, horizon == "L horizon")[, -1], caption = "Propotion of NMR product for the H horizon")
+write.csv(nmr_prop, "Output/Tables/NMR_product.csv", row.names = FALSE)
 
 
 # . RDA -------------------------------------------------------------------
@@ -238,7 +244,8 @@ anova(nmr_humus_rda, nperm = 4999)
 
 pyr_all_raw <- bind_rows(pyr_litter, pyr_humus) %>% 
   mutate(CLratio = carbohydrate/(g_lignin + s_lignin + Phenol),
-         layer = factor(layer, levels = c("Litter", "Humus"))) %>% 
+         layer = factor(layer, levels = c("Litter", "Humus")),
+         horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon"))) %>% 
   left_join(irms_dd)
 
 # . carbohydrate:lignin vs leaf d15N --------------------------------------

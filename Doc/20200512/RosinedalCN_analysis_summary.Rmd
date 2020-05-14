@@ -22,16 +22,16 @@ load("../../Output/Data/Analysis_results.RData")
 ## Pyrolysis products
 ```{r pyrolysis_product}
 knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
-knitr::kable(filter(py_prop, layer == "Humus")[, -1], caption = "Propotion of pyrolysis product for humus")
-knitr::kable(filter(py_prop, layer == "Litter")[, -1], caption = "Propotion of pyrolysis product for litter")
+knitr::kable(filter(py_prop, horizon == "F/H horizoin")[, -1], caption = "Propotion of pyrolysis product for F/H horizon")
+knitr::kable(filter(py_prop, horizon == "L horizon")[, -1], caption = "Propotion of pyrolysis product for L horizon")
 knitr::kable(py_prop_CH, caption = "Propotion in carbohydrate")
 knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
 ```
 
 ## Pyrolysis RDA
 ```{r pyrolysis_rda, results='markup'}
-knitr::kable(anova(pyr_humus_rda, nperm = 4999), caption = "RDA on pyrolysis for humus")
-knitr::kable(anova(pyr_litter_rda, nperm = 4999), caption = "RDA on pyrolysis for litter")
+knitr::kable(anova(pyr_humus_rda, nperm = 4999), caption = "RDA on pyrolysis for F/H horizon")
+knitr::kable(anova(pyr_litter_rda, nperm = 4999), caption = "RDA on pyrolysis for L horizon")
 ```
 
 
@@ -39,20 +39,44 @@ knitr::kable(anova(pyr_litter_rda, nperm = 4999), caption = "RDA on pyrolysis fo
 
 ## NMR products
 ```{r nmr_product}
-knitr::kable(filter(nmr_prop, layer == "Humus")[, -1], caption = "Propotion of NMR product for humus")
-knitr::kable(filter(nmr_prop, layer == "Litter")[, -1], caption = "Propotion of NMR product for litter")
+knitr::kable(filter(nmr_prop, horizon == "F/H horizoin")[, -1], caption = "Propotion of NMR product for F/H horizon")
+knitr::kable(filter(nmr_prop, horizon == "L horizon")[, -1], caption = "Propotion of NMR product for L horizon")
 ```
 
 ## NMR RDA
 ```{r nmr_rda}
-knitr::kable(anova(nmr_humus_rda, nperm = 4999), caption = "RDA on NMR for humus")
-knitr::kable(anova(nmr_litter_rda, nperm = 4999), caption = "RDA on NMR for litter")
+knitr::kable(anova(nmr_humus_rda, nperm = 4999), caption = "RDA on NMR for F/H horizon")
+knitr::kable(anova(nmr_litter_rda, nperm = 4999), caption = "RDA on NMR for L horizon")
 ```
 
 
 # Carbohydrate:Lignin ratios
 ```{r CLratio}
 knitr::kable(Anova(cl_leafd15N_m1, test.statistic = "F"), caption = "Carbohydrate:Ligninratio vs. leaf d15 N")
-knitr::kable(Anova(Cmass_lcr_m1, test.statistic = "F"), caption = "C mass vs. Carbohydrate:Ligninratio")
+```
+
+
+# Correlation test
+
+## Leaf d15N vs. N compound
+```{r cor_test_leafd15N_Ncomp, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$leaf_d15N, x$N_comp)
+})
+```
+
+## Soil C:N ratio vs. N compound
+```{r cor_test_soilCNN_comp, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$CNratio, x$N_comp)
+})
+```
+
+## Cmass ratio vs. Carbohydrate:Lignin ratio
+```{r cor_test_Cmass_CLratio, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$Cmass, x$CLratio)
+})
+
 ```
 
