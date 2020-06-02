@@ -1,7 +1,7 @@
 ---
 title: "Rosinedal CN summary"
 author: "Shun Hasegawa"
-date: "12/05/2020"
+date: "22/05/2020"
 output:
   html_document:
     df_print: paged
@@ -17,13 +17,21 @@ source("../../R/packages.R")
 load("../../Output/Data/Analysis_results.RData")
 ```
 
+# Summary
+```{r smmry_tbl}
+irms_smmry %>% 
+  mutate_if(is.numeric, .funs = funs(round(., 3))) %>% 
+knitr::kable(., caption = "Summary of C and N")
+```
+
+
 # Pyrolysis
 
 ## Pyrolysis products
 ```{r pyrolysis_product}
 knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
 knitr::kable(filter(py_prop, horizon == "L horizon")[, -1], caption = "Propotion of pyrolysis product for L horizon")
-knitr::kable(filter(py_prop, horizon == "F/H horizoin")[, -1], caption = "Propotion of pyrolysis product for F/H horizon")
+knitr::kable(filter(py_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of pyrolysis product for F/H horizon")
 knitr::kable(py_prop_CH, caption = "Propotion in carbohydrate")
 knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
 ```
@@ -73,7 +81,7 @@ data.frame(scores(pyr_humus_rda_f)$species) %>%
 
 ```{r nmr_product}
 knitr::kable(filter(nmr_prop, horizon == "L horizon")[, -1], caption = "Propotion of NMR product for L horizon")
-knitr::kable(filter(nmr_prop, horizon == "F/H horizoin")[, -1], caption = "Propotion of NMR product for F/H horizon")
+knitr::kable(filter(nmr_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of NMR product for F/H horizon")
 ```
 
 
@@ -118,9 +126,15 @@ data.frame(scores(nmr_humus_rda_f)$species) %>%
 
 ```
 
-# Carbohydrate:Lignin ratios
-```{r CLratio}
-knitr::kable(Anova(cl_leafd15N_m1, test.statistic = "F"), caption = "Carbohydrate:Ligninratio vs. leaf d15 N")
+# Lignin:carbohydrate ratios
+```{r LCratio_summary}
+knitr::kable(LC_smmry, caption = "Lignin:carbohydrate ratios (%Mean[95% CI])")
+```
+
+
+```{r LCratio_stat}
+knitr::kable(Anova(lc_leafd15N_m3, test.statistic = "F"), caption = "Ligninratio:Carbohydrate vs. leaf d15 N")
+knitr::kable(Anova(lc_leafd15N_fm1, test.statistic = "F"), caption = "Ligninratio:Carbohydrate vs. leaf d15 N (only fertilisedf)")
 ```
 
 
@@ -129,21 +143,30 @@ knitr::kable(Anova(cl_leafd15N_m1, test.statistic = "F"), caption = "Carbohydrat
 ## Leaf d15N vs. N compound
 ```{r cor_test_leafd15N_Ncomp, results='markup'}
 dlply(pyr_all_raw, .(horizon), function(x){
-  cor.test(x$leaf_d15N, x$N_comp)
+  cor.test(x$leaf_d15N, x$N_comp, method = "spearman")
 })
 ```
 
 ## Soil C:N ratio vs. N compound
 ```{r cor_test_soilCNN_comp, results='markup'}
 dlply(pyr_all_raw, .(horizon), function(x){
-  cor.test(x$CNratio, x$N_comp)
+  cor.test(x$CNratio, x$N_comp, method = "spearman")
 })
 ```
 
-## Cmass ratio vs. Carbohydrate:Lignin ratio
-```{r cor_test_Cmass_CLratio, results='markup'}
+## Cmass ratio vs. Lignin:carbohydrate ratio
+### Spearman's rank correlation
+```{r cor_test_Cmass_LCratio_Spearman, results='markup'}
 dlply(pyr_all_raw, .(horizon), function(x){
-  cor.test(x$Cmass, x$CLratio)
+  cor.test(x$Cmass, x$LCratio, method = "spearman")
+})
+
+```
+
+### Peason's correlation
+```{r cor_test_Cmass_LCratio_Pearson, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$Cmass, 1/(x$LCratio))
 })
 
 ```
