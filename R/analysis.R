@@ -101,7 +101,8 @@ write.csv(py_prop, "Output/Tables/Pyrolysis_product.csv", row.names = FALSE)
 # Carbohydrate
 py_prop_CH <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
   filter(grp == "carbohydrate") %>% 
-  mutate(comp = ifelse(comp %in% c("beta.-D-Glucopyranose, 1,6-anhydro-", "Levosugars1", "Levosugars2", "Levosugars3"), "levosugar", comp)) %>% 
+  mutate(comp = ifelse(comp %in% c("Levosugars1", "Levosugars2", "Levosugars3"), "levosugar", comp),
+         comp = mapvalues(comp, "Levoglucosenone and Maltol", "Levoglucosenone")) %>% 
   select(comp, value, layer, id) %>% 
   group_by(layer, id, comp) %>% 
   summarise(value = sum(value)) %>% 
@@ -112,7 +113,7 @@ py_prop_CH <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>%
   group_by(comp, layer) %>% 
   summarise(value = mean(value)) %>% 
   spread(layer, value) %>% 
-  arrange(-Humus, -Litter)
+  arrange(comp)
 
 
 knitr::kable(py_prop_CH, caption = "Propotion in carbohydrate")
@@ -339,7 +340,6 @@ qqresidPlot(Cmass_lcr_fm1)
 
 
 # Summary of each layer ---------------------------------------------------
-irms_lingon_ful
 irms_lingon_smmry <- irms_lingon_ful %>% 
   group_by(location2) %>% 
   summarise_at(.vars = vars(leaf_d15N), .funs = funs(d15N_M = mean, d15N_CI = get_ci, N = get_n)) %>% 
