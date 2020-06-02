@@ -52,7 +52,7 @@ pyr_unk_bip_prop <- bind_rows(pyr_litter_raw, pyr_humus_raw) %>%
   group_by(horizon) %>% 
   mutate(prop = (area / sum(area)) * 100,
          prop = round(prop, 2)) %>% 
-  filter(grp %in% c("co2", "Acetic acid", "unknown")) %>% 
+  filter(grp %in% c("co2", "unknown")) %>% 
   select(-area) %>% 
   spread(horizon, prop)
 knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
@@ -60,14 +60,14 @@ knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
 
 # Proportion without biproducts or unknown
 pyr_litter_spec <- pyr_litter_raw %>% 
-  filter(!(grp %in% c("co2", "Acetic acid", "unknown"))) %>% 
+  filter(!(grp %in% c("co2", "unknown"))) %>% 
   group_by(id) %>% 
   mutate(value = area / sum(area)) %>% 
   ungroup() %>% 
   select(-area)
 
 pyr_humus_spec <- pyr_humus_raw %>% 
-  filter(!(grp %in% c("co2", "Acetic acid", "unknown"))) %>% 
+  filter(!(grp %in% c("co2", "unknown"))) %>% 
   group_by(id) %>% 
   mutate(value = area / sum(area)) %>% 
   ungroup() %>% 
@@ -275,51 +275,84 @@ anova(nmr_humus_rda_f, nperm = 4999)
 
 
 pyr_all_raw <- bind_rows(pyr_litter, pyr_humus) %>% 
-  mutate(CLratio = carbohydrate/(g_lignin + s_lignin + Phenol),
+  mutate(LCratio = (g_lignin + s_lignin + Phenol)/carbohydrate,
          layer = factor(layer, levels = c("Litter", "Humus")),
          horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon"))) %>% 
   left_join(irms_dd)
 
-# . carbohydrate:lignin vs leaf d15N --------------------------------------
-ggplot(pyr_all_raw, aes(x = leaf_d15N, y = CLratio, col = layer))+
+# . lignin:carbohydrate vs leaf d15N --------------------------------------
+ggplot(pyr_all_raw, aes(x = leaf_d15N, y = log(LCratio), col = layer))+
   geom_point() +
   geom_smooth(method = "lm")
 
+lc_leafd15N_m1 <- lmer(log(LCratio) ~ leaf_d15N * layer + (1|id), pyr_all_raw)
+Anova(lc_leafd15N_m1, test.statistic = "F")
+qqresidPlot(lc_leafd15N_m1)
 
-cl_leafd15N_m1 <- lmer(CLratio ~ leaf_d15N * layer + (1|id), pyr_all_raw)
-Anova(cl_leafd15N_m1, test.statistic = "F")
-qqresidPlot(cl_leafd15N_m1)
+# Outlisrs are suggested
+lc_leafd15N_m2 <- update(lc_leafd15N_m1, subset=-c(11, 39))
+Anova(lc_leafd15N_m2, test.statistic = "F")
+qqresidPlot(lc_leafd15N_m2)
+# interactions were derived by the outlisers
+
+# try transformation
+lc_leafd15N_m3 <- lmer(1/LCratio ~ leaf_d15N * layer + (1|id), pyr_all_raw)
+Anova(lc_leafd15N_m3, test.statistic = "F")
+qqresidPlot(lc_leafd15N_m3)
 
 # only fertilised plot
-cl_leafd15N_fm1 <- lmer(CLratio ~ leaf_d15N * layer + (1|id), 
+lc_leafd15N_fm1 <- lmer(1/LCratio ~ leaf_d15N * layer + (1|id), 
                         filter(pyr_all_raw, treatment == "fertilised"))
-Anova(cl_leafd15N_fm1, test.statistic = "F")
-qqresidPlot(cl_leafd15N_fm1)
+Anova(lc_leafd15N_fm1, test.statistic = "F")
+qqresidPlot(lc_leafd15N_fm1)
+
+# Summary of lignin:carbohydrate ratios
+LC_smmry <- pyr_all_raw %>% 
+  group_by(horizon, location2) %>% 
+  summarise_at(.vars = vars(LCratio), .funs = funs(M = mean, CI = get_ci)) %>% 
+  ungroup() %>% 
+  mutate(value = paste0(round(M, 3), "[", round(CI, 3), ']')) %>% 
+  select(horizon, location2, value) %>% 
+  spread(location2, value)
 
 
+# . lignin:carbohydrte vs. C mass ----------------------------------------
 
-# . carbohydrate:lignin vs. C mass ----------------------------------------
-
-ggplot(pyr_all_raw, aes(x = CLratio, y = Cmass, col = layer))+
+ggplot(pyr_all_raw, aes(x = log(LCratio), y = Cmass, col = layer))+
   geom_point() +
   geom_smooth(method = "lm")
-pyr_all_raw2 <- pyr_all_raw %>% 
-  mutate(id = factor(id))
-Cmass_lcr_m1 <- lmer(Cmass ~ CLratio * layer + (1|id), pyr_all_raw)
+Cmass_lcr_m1 <- lmer(Cmass ~ log(LCratio) * layer + (1|id), pyr_all_raw)
 Anova(Cmass_lcr_m1, test.statistic = "F")
 qqresidPlot(Cmass_lcr_m1)
-visreg(Cmass_lcr_m1, xvar = "CLratio", by = "layer", overlay = TRUE)
+visreg(Cmass_lcr_m1, xvar = "LCratio", by = "layer", overlay = TRUE)
 
 # only fertilised plot
 ggplot(filter(pyr_all_raw, treatment == "fertilised"), 
-       aes(x = CLratio, y = Cmass, color = layer))+
+       aes(x = log(LCratio), y = Cmass, color = layer))+
   geom_point()+
   geom_smooth(method = "lm")
-Cmass_lcr_fm1 <- lmer(Cmass ~ CLratio + layer + (1|id), 
+Cmass_lcr_fm1 <- lmer(Cmass ~ log(LCratio) + layer + (1|id), 
                       filter(pyr_all_raw, treatment == "fertilised"))
 Anova(Cmass_lcr_fm1, test.statistic = "F")
 qqresidPlot(Cmass_lcr_fm1)
 
+
+
+# Summary of each layer ---------------------------------------------------
+irms_lingon_ful
+irms_lingon_smmry <- irms_lingon_ful %>% 
+  group_by(location2) %>% 
+  summarise_at(.vars = vars(leaf_d15N), .funs = funs(d15N_M = mean, d15N_CI = get_ci, N = get_n)) %>% 
+  mutate(horizon = "leaf")
+
+irms_smmry <- irms_dd %>% 
+  group_by(location2, horizon) %>% 
+  summarise_at(.vars = vars(Cmass, Nmass, CNratio, d15N), .funs = funs(M = mean, CI = get_ci, N = get_n)) %>% 
+  select(-Cmass_N, -Nmass_N, -CNratio_N) %>%
+  rename(N = d15N_N) %>% 
+  select(horizon, location2, starts_with("Cmass"), starts_with("Nmass"), starts_with("CN"), starts_with("d15N"), N) %>% 
+  arrange(horizon) %>% 
+  bind_rows(irms_lingon_smmry) 
 
 
 # Figures ----------------------------------------------------------------
