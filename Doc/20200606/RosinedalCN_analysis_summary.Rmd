@@ -32,7 +32,13 @@ knitr::kable(., caption = "Summary of C and N")
 knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
 knitr::kable(filter(py_prop, horizon == "L horizon")[, -1], caption = "Propotion of pyrolysis product for L horizon")
 knitr::kable(filter(py_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of pyrolysis product for F/H horizon")
-knitr::kable(arrange(py_prop_CH, -(Litter+Humus)), caption = "Propotion in carbohydrate")
+py_prop_CH %>% 
+  mutate(L = ifelse(is.na(Litter), 0, Litter),
+         H = ifelse(is.na(Humus), 0, Humus),
+         LH = L + H) %>% 
+  arrange(-LH) %>% 
+  select(comp, Litter, Humus) %>% 
+knitr::kable(., caption = "Propotion in carbohydrate")
 knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
 ```
 
