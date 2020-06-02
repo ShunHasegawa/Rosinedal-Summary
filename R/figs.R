@@ -416,42 +416,71 @@ dev.off()
 
 
 
-# Fig 5. Carbohydrate:Lignin ratios ---------------------------------------
+# Fig 5. Lignin:carbohydrate ratios ---------------------------------------
 
-CL_leafd15N_P <- ggplot(pyr_all_raw, aes(x = leaf_d15N, y = CLratio))+
-  geom_point(aes(col = horizon), size = 3, alpha = .8) +
-  geom_smooth(aes(col = horizon), method = "lm", se = FALSE, size = 1)+
+
+lc_newd <- with(pyr_all_raw,
+                expand.grid(leaf_d15N = seq(min(leaf_d15N), max(leaf_d15N), length.out = 1000),
+                            layer = unique(layer)))
+lc_pred <- lc_newd %>% 
+  mutate(LCratio = 1/predict(lc_leafd15N_m3, lc_newd, re.form=NA),
+         horizon  = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")))
+
+# Log
+LC_leafd15N_P <- ggplot(pyr_all_raw, aes(x = leaf_d15N, y = log(LCratio)))+
+  geom_point(aes(col = horizon), size = 2, alpha = .8) +
+  geom_line(data = lc_pred, aes(x = leaf_d15N, y = log(LCratio), col = horizon))+
   scale_color_manual(values = c("black", "red"))+
   labs(x = expression(paste("Leaf ", delta^{15}, "N (\u2030)")),
-       y = "Carbohydrate:Lignin ratio")+
+       y = expression(log[e](Lignin:Carbohydrate~ratio)))+
   science_theme+
-  theme(legend.position = c(.75, .9))
-cairo_pdf("Output/Figs/Carbohydrate_Lignin_ratio_leafd15N.pdf", width = 4, height = 3)
-CL_leafd15N_P
+  theme(legend.key.width = unit(2, "lines"),
+        legend.position = c(.2, .6))
+cairo_pdf("Output/Figs/Lignin_Carbohydrate_ratio_leafd15N_log.pdf", width = 4, height = 3)
+LC_leafd15N_P
 dev.off()
 
-cairo_ps("Output/Figs/Carbohydrate_Lignin_ratio_leafd15N.eps", width = 4, height = 3)
-CL_leafd15N_P
+cairo_ps("Output/Figs/Lignin_Carbohydrate_ratio_leafd15N_log.eps", width = 4, height = 3)
+LC_leafd15N_P
+dev.off()
+
+# raw
+LC_leafd15N_raw_P <- ggplot(pyr_all_raw, aes(x = leaf_d15N, y = LCratio))+
+  geom_point(aes(col = horizon), size = 2, alpha = .8) +
+  geom_line(data = lc_pred, aes(x = leaf_d15N, y = LCratio, col = horizon))+
+  scale_color_manual(values = c("black", "red"))+
+  labs(x = expression(paste("Leaf ", delta^{15}, "N (\u2030)")),
+       y = "Lignin:Carbohydrate ratio")+
+  science_theme+
+  theme(legend.key.width = unit(2, "lines"),
+        legend.position = c(.2, .6))
+cairo_pdf("Output/Figs/Lignin_Carbohydrate_ratio_leafd15N.pdf", width = 4, height = 3)
+LC_leafd15N_raw_P
+dev.off()
+
+cairo_ps("Output/Figs/Lignin_Carbohydrate_ratio_leafd15N.eps", width = 4, height = 3)
+LC_leafd15N_raw_P
 dev.off()
 
 
-CL_Cmass_P <- ggplot(pyr_all_raw, aes(x = CLratio, y = Cmass))+
-  geom_point(aes(col = layer), size = 3, alpha = .8) +
+LC_Cmass_P <- ggplot(pyr_all_raw, aes(x = log(LCratio), y = Cmass))+
+  geom_point(aes(col = layer), size = 2, alpha = .8) +
   geom_smooth(aes(col = layer), method = "lm", se = FALSE, size = 1)+
   scale_color_manual(values = c("black", "red"))+
   science_theme+
-  labs(x = "Carbohydrate:Lignin ratio",
+  labs(x = "log(Lignin:Carbohydrate ratio)",
        y = expression(C~mass~(kg~C~ha^'-1')))+
   theme(legend.position = "NULL")
 
-CL_p <- ggarrange(CL_leafd15N_P, CL_Cmass_P, ncol = 2, labels = c("(a)", "(b)"),
-                  label.args = list(gp = grid::gpar(cex = 1), hjust = -.3, vjust = 1.5))
-cairo_pdf("Output/Figs/Carbohydrate_Lignin_ratio.pdf", width = 6.5, height = 3)
-CL_p
+LC_p <- ggarrange(LC_leafd15N_P, LC_Cmass_P, ncol = 2, labels = c("(a)", "(b)"),
+                  label.args = list(gp = grid::gpar(cex = 1), hjust = -.3, vjust = 1.5),
+                  draw = FALSE)
+cairo_pdf("Output/Figs/Lignin_Carbohydrate_ratio.pdf", width = 6.5, height = 3)
+LC_p
 dev.off()
 
-save_png600("Output/Figs/Carbohydrate_Lignin_ratio.png", width = 6.5, height = 3)
-CL_p
+save_png600("Output/Figs/Lignin_Carbohydrate_ratio.png", width = 6.5, height = 3)
+LC_p
 dev.off()
 
 
