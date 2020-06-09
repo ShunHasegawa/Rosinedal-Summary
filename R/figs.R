@@ -132,21 +132,17 @@ dev.off()
 
 # Pyrolysis
 pyr_prop_dd <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
-  select(grp, comp, id, value, layer, location2) %>%
+  select(category, compound, id, value, layer, location2) %>%
   mutate(layer = factor(layer, levels = c("Litter", "Humus")),
          horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon")),
-         grp2 = mapvalues(grp, 
-                          c("alphatic_derivative", "aromatic", "carbohydrate", 
-                            "g_lignin", "N_comp", "Phenol", "s_lignin", "Others"),
-                          pyr_comp_ed),
-         grp2 = factor(grp2, levels = pyr_comp_ed)) %>% 
-  group_by(grp2, layer, horizon, location2, id) %>% 
+         category = factor(category, levels = pyr_comp_ed)) %>% 
+  group_by(category, layer, horizon, location2, id) %>% 
   summarise(value = sum(value) * 100) %>% 
-  group_by(grp2, layer, horizon, location2) %>% 
+  group_by(category, layer, horizon, location2) %>% 
   summarise(value = mean(value)) %>% 
   ungroup()
 
-pyr_prop_p <- ggplot(pyr_prop_dd, aes(x = location2, y = value, fill = grp2))+
+pyr_prop_p <- ggplot(pyr_prop_dd, aes(x = location2, y = value, fill = category))+
   geom_bar(stat = "identity", col = "black", size = .3) +
   facet_grid(. ~ horizon)+
   scale_fill_manual(values = c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666")) +
@@ -204,12 +200,8 @@ pyr_litter_rda_site <- pyr_litter %>%
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, PYR_RDA1)
 pyr_litter_rda_sp <- data.frame(scores(pyr_litter_rda)$species) %>% 
-  mutate(pyr_comp = row.names(.),
-         pyr_comp = factor(pyr_comp, levels = pyr_comp[order(RDA1)]),
-         pyr_comp2 = mapvalues(pyr_comp, 
-                   c("alphatic_derivative", "aromatic", "carbohydrate", 
-                     "g_lignin", "N_comp", "Phenol", "s_lignin", "Others"),
-                   pyr_comp_ed))
+  mutate(pyr_comp = row.names(.)) %>% 
+  arrange(RDA1)
 
 # NMR
 nmr_litter_rda_site <- nmr_litter %>% 
@@ -218,10 +210,10 @@ nmr_litter_rda_site <- nmr_litter %>%
   select(id, location2, leaf_d15N, NMR_RDA1)
 nmr_litter_rda_sp   <- data.frame(scores(nmr_litter_rda)$species) %>% 
   mutate(nmr_comp = row.names(.),
-         nmr_comp = factor(nmr_comp, levels = nmr_comp[order(RDA1)]),
          nmr_comp2 = mapvalues(nmr_comp, 
                               c("alkylC" , "meth_N_alkylC", "O_alkylC", "di_O_alkylC", "aromatic", "O_aromaticC", "carbonylC"),
-                              c("Alkyl C", "Methoxy/N-\nalkyl C", "O-alkyl C", "Di-O-alkyl C", "Aromatic C", "O-aromatic C", "Carbonyl C")))
+                              c("Alkyl C", "Methoxy/N-\nalkyl C", "O-alkyl C", "Di-O-alkyl C", "Aromatic C", "O-aromatic C", "Carbonyl C"))) %>% 
+  arrange(RDA1)
 
 # Combine two
 litter_rda_nmr_pyr <- left_join(nmr_litter_rda_site, pyr_litter_rda_site)
@@ -268,7 +260,7 @@ litter_rda_nmrsp_p <- ggplot(nmr_litter_rda_sp, aes(x = 1, y = RDA1 * 3, label =
         plot.margin = margin(t = 0, r = 0, b = .5, l = 0, unit = "line"))
 
 # sp loading for Pyrolysis
-litter_rda_pyrsp_p <- ggplot(pyr_litter_rda_sp, aes(x = 1, y = RDA1 * 1.3, label = pyr_comp2)) +
+litter_rda_pyrsp_p <- ggplot(pyr_litter_rda_sp, aes(x = 1, y = RDA1 * 1.3, label = pyr_comp)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0, angle = 90) +
@@ -310,12 +302,8 @@ pyr_humus_rda_site <- pyr_humus %>%
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, PYR_RDA1)
 pyr_humus_rda_sp <- data.frame(scores(pyr_humus_rda)$species) %>% 
-  mutate(pyr_comp = row.names(.),
-         pyr_comp = factor(pyr_comp, levels = pyr_comp[order(RDA1)]),
-         pyr_comp2 = mapvalues(pyr_comp, 
-                               c("alphatic_derivative", "aromatic", "carbohydrate", 
-                                 "g_lignin", "N_comp", "Phenol", "s_lignin", "Others"),
-                               pyr_comp_ed))
+  mutate(pyr_comp = row.names(.)) %>% 
+  arrange(RDA1)
 
 # NMR
 nmr_humus_rda_site <- nmr_humus %>% 
@@ -324,7 +312,6 @@ nmr_humus_rda_site <- nmr_humus %>%
   select(id, location2, leaf_d15N, NMR_RDA1)
 nmr_humus_rda_sp   <- data.frame(scores(nmr_humus_rda)$species) %>% 
   mutate(nmr_comp = row.names(.),
-         nmr_comp = factor(nmr_comp, levels = nmr_comp[order(RDA1)]),
          nmr_comp2 = mapvalues(nmr_comp, 
                                c("alkylC" , "meth_N_alkylC", "O_alkylC", "di_O_alkylC", "aromatic", "O_aromaticC", "carbonylC"),
                                c("Alkyl-C", "Methoxy/N-\nalkyl-C", "O-alkyl-C", "Di-O-alkyl-C", "Aromatic-C", "O-aromatic-C", "Carbonyl-C")))
@@ -370,7 +357,7 @@ humus_rda_nmrsp_p <- ggplot(nmr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.8, label =
         plot.margin = margin(t = 0, r = 0, b = .5, l = 0, unit = "line"))
 
 # sp loading for Pyrolysis
-humus_rda_pyrsp_p <- ggplot(pyr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.1, label = pyr_comp2)) +
+humus_rda_pyrsp_p <- ggplot(pyr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.1, label = pyr_comp)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0, angle = 90) +
@@ -488,17 +475,74 @@ dev.off()
 # Fig S. N comp -----------------------------------------------------------
 
 py_Ncomp_prop <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
-  filter(grp == "N_comp") %>% 
-  select(location2, grp, comp, id, value, horizon) %>% 
+  filter(category == "N-compound") %>% 
+  select(location2, category, compound, id, value, horizon) %>% 
   group_by(id, horizon) %>% 
   mutate(Nprop = value * 100 / sum(value)) %>% 
-  group_by(location2, comp, horizon) %>% 
+  group_by(location2, compound, horizon) %>% 
   summarise(value = mean(Nprop)) %>% 
   ungroup()
-ggplot(py_Ncomp_prop, aes(x  = location2, y = value, fill = comp))+
+ggplot(py_Ncomp_prop, aes(x  = location2, y = value, fill = compound))+
   geom_bar(stat = "identity")+
   facet_grid(. ~ horizon)+
   labs(y = "Proportion (%)")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.text = element_text(size = 6))
+
+
+
+
+# Fig S. Pyrolysates ------------------------------------------------------
+
+pyr_prop_smmry <- rbind.fill(pyr_litter_spec, pyr_humus_spec) %>% 
+  group_by(horizon, category, compound, location2) %>% 
+  summarise_at(.vars = vars(value), .funs = funs(M = mean, CI = get_ci, N = get_n)) %>% 
+  ungroup() %>% 
+  mutate(compound = factor(compound, levels = sort(unique(compound), decreasing = TRUE)),
+         location2 = mapvalues(location2,
+                               c("control", "fertilised:outside", "fertilised:edge","fertilised:inside"),
+                               c("Control", "Fertilised:Outside", "Fertilised:Edge","Fertilised:Inside")))
+
+pyr_prop_cat_p <- dlply(pyr_prop_smmry, .(category), function(z){
+  gp <- ggplot(z, aes(x = compound, y = M, col = location2))+
+    geom_errorbar(aes(ymin = M - CI, ymax = M + CI, width = 0), alpha = .6,
+                  position = position_dodge(.3))+
+    geom_point(alpha = .6, size = .9, position = position_dodge(.3))+
+    facet_grid(. ~ horizon)+
+    coord_flip()+
+    labs(x = NULL, y = "Proportion (%)")+
+    science_theme+
+    theme(axis.text.x        = element_text(size = 6.5),
+          axis.text.y        = element_text(size = 6.5),
+          axis.title.x       = element_text(size = 6.7),
+          strip.text.x       = element_text(size = 6.5,
+                                            margin = margin(.05,0,.05,0, "cm")),
+          legend.title       = element_blank(),
+          legend.position    = "right",
+          panel.grid.major   = element_line(colour = "grey90", size = .2),
+          panel.grid.major.x = element_blank())
+  return(gp)
+})
+
+# No. of compounds for each group
+pyr_fig_length <- pyr_prop_smmry %>% 
+  select(category, compound) %>% 
+  distinct() %>% 
+  group_by(category) %>% 
+  summarise(No = length(compound)) %>% 
+  mutate(No_r = No / max(No),
+         No_r = ifelse(No_r == 1, No_r, No_r + .05))
+
+# edit
+pyr_prop_cat_p$`N-compound` <- pyr_prop_cat_p$`N-compound`+
+  scale_y_continuous(breaks = c(0, 0.005, 0.01), labels = c(0, 0.005, 0.01))
+
+# save
+l_ply(1:8, function(x){
+  p <- pyr_prop_cat_p[[x]]
+  p_name <- names(pyr_prop_cat_p)[x]
+  p_height_r <- pyr_fig_length$No_r[x]
+  ggsavePP(filename = paste0("Output/Figs/Pyrolysates/Pyrolysate_", p_name),
+           p, width = 6.5, height = 6.5 * p_height_r)
+})
 
