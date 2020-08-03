@@ -1,0 +1,179 @@
+---
+title: "Rosinedal CN summary"
+author: "Shun Hasegawa"
+date: "03/08/2020"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# knitr::opts_chunk$set(echo = FALSE, fig.path='Figs/', dev=c('png', 'pdf'), dpi = 600)
+source("../../R/packages.R")
+load("../../Output/Data/Analysis_results.RData")
+```
+
+# Summary
+```{r smmry_tbl}
+irms_smmry %>% 
+  mutate_if(is.numeric, .funs = funs(round(., 3))) %>% 
+knitr::kable(., caption = "Summary of C and N")
+```
+
+
+# Pyrolysis
+
+## Pyrolysis products
+```{r pyrolysis_product}
+knitr::kable(pyr_unk_bip_prop, caption = "Proportion of all product (%)")
+knitr::kable(filter(py_prop, horizon == "L horizon")[, -1], caption = "Propotion of pyrolysis product for L horizon")
+knitr::kable(filter(py_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of pyrolysis product for F/H horizon")
+py_prop_CH %>% 
+  mutate(L = ifelse(is.na(Litter), 0, Litter),
+         H = ifelse(is.na(Humus), 0, Humus),
+         LH = L + H) %>% 
+  arrange(-LH) %>% 
+  select(compound, Litter, Humus) %>% 
+knitr::kable(., caption = "Propotion in carbohydrate")
+knitr::kable(py_Ncomp_ind, caption = "Propotion in N compouds")
+```
+
+## Pyrolysis RDA
+
+### L horizon
+```{r pyrolysis_rda_L, results='markup'}
+knitr::kable(anova(pyr_litter_rda, nperm = 4999), caption = "RDA on pyrolysis for L horizon")
+
+pyr_litter_rda_sp %>% 
+  select(pyr_comp, RDA1) %>% 
+  mutate(RDA1 = round(RDA1, 3)) %>% 
+  arrange(RDA1) %>% 
+knitr::kable(., caption = "Sp scores on pyrolysis for L horizon")
+
+knitr::kable(anova(pyr_litter_rda_f, nperm = 4999), caption = "RDA on pyrolysis for L horizon (fertilised)")
+data.frame(scores(pyr_litter_rda_f)$species) %>%
+  mutate(pyr_comp = row.names(.),
+         RDA1 = round(RDA1, 3)) %>%
+  select(pyr_comp, RDA1) %>%
+  arrange(RDA1) %>%
+  knitr::kable(., caption = "Sp scores on pyrolysis for L horizon (fertilised)")
+```
+
+### F/H horizon
+```{r pyrolysis_rda_H, results='markup'}
+knitr::kable(anova(pyr_humus_rda, nperm = 4999), caption = "RDA on pyrolysis for F/H horizon")
+pyr_humus_rda_sp %>% 
+  select(pyr_comp, RDA1) %>% 
+  mutate(RDA1 = round(RDA1, 3)) %>% 
+  arrange(RDA1) %>% 
+knitr::kable(., caption = "Sp scores on pyrolysis for F/H horizon")
+
+knitr::kable(anova(pyr_humus_rda_f, nperm = 4999), caption = "RDA on pyrolysis for F/H horizon (fertilised)")
+data.frame(scores(pyr_humus_rda_f)$species) %>%
+  mutate(pyr_comp = row.names(.),
+         RDA1 = round(RDA1, 3)) %>%
+  select(pyr_comp, RDA1) %>%
+  arrange(RDA1) %>%
+  knitr::kable(., caption = "Sp scores on pyrolysis for F/H horizon (fertilised)")
+```
+
+# NMR
+
+## NMR products
+
+```{r nmr_product}
+knitr::kable(filter(nmr_prop, horizon == "L horizon")[, -1], caption = "Propotion of NMR product for L horizon")
+knitr::kable(filter(nmr_prop, horizon == "F/H horizon")[, -1], caption = "Propotion of NMR product for F/H horizon")
+```
+
+
+## NMR RDA
+
+### L horizon
+```{r nmr_rda}
+knitr::kable(anova(nmr_litter_rda, nperm = 4999), caption = "RDA on NMR for L horizon")
+nmr_litter_rda_sp %>% 
+  select(nmr_comp, RDA1) %>% 
+  mutate(RDA1 = round(RDA1, 3)) %>% 
+  arrange(RDA1) %>% 
+  knitr::kable(., caption = "Sp scores on RDA for L horizon")
+
+knitr::kable(anova(nmr_litter_rda_f, nperm = 4999), caption = "RDA on NMR for L horizon (only fertilised plots)")
+data.frame(scores(nmr_litter_rda_f)$species) %>% 
+  mutate(nmr_comp = row.names(.),
+         RDA1 = round(RDA1, 3)) %>% 
+  select(nmr_comp, RDA1) %>% 
+  arrange(RDA1) %>% 
+  knitr::kable(., caption = "Sp scores on RDA for L horizon (fertilised plots)")
+
+```
+
+### F/H horizon
+```{r nmr_rad_fert}
+knitr::kable(anova(nmr_humus_rda, nperm = 4999), caption = "RDA on NMR for F/H horizon")
+nmr_humus_rda_sp %>% 
+  select(nmr_comp, RDA1) %>% 
+  mutate(RDA1 = round(RDA1, 3)) %>% 
+  arrange(RDA1) %>% 
+  knitr::kable(., caption = "Sp scores on RDA for F/H horizon")
+
+knitr::kable(anova(nmr_humus_rda_f, nperm = 4999), caption = "RDA on NMR for F/H horizon (only fertilised plots)")
+data.frame(scores(nmr_humus_rda_f)$species) %>% 
+  mutate(nmr_comp = row.names(.),
+         RDA1 = round(RDA1, 3)) %>% 
+  select(nmr_comp, RDA1) %>% 
+  arrange(RDA1) %>% 
+  knitr::kable(., caption = "Sp scores on RDA for F/H horizon (fertilised plots)")
+
+
+```
+
+# Lignin:carbohydrate ratios
+```{r LCratio_summary}
+knitr::kable(LC_smmry, caption = "Lignin:carbohydrate ratios (%Mean[95% CI])")
+```
+
+
+```{r LCratio_stat}
+knitr::kable(Anova(lc_leafd15N_m3, test.statistic = "F"), caption = "Ligninratio:Carbohydrate vs. leaf d15 N")
+knitr::kable(Anova(lc_leafd15N_fm1, test.statistic = "F"), caption = "Ligninratio:Carbohydrate vs. leaf d15 N (only fertilisedf)")
+```
+
+
+# Correlation test
+
+## Leaf d15N vs. N compound
+```{r cor_test_leafd15N_Ncomp, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$leaf_d15N, x$`N-compound`, method = "spearman")
+})
+```
+
+## Soil C:N ratio vs. N compound
+```{r cor_test_soilCNN_comp, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$CNratio, x$`N-compound`, method = "spearman")
+})
+```
+
+## Cmass ratio vs. Lignin:carbohydrate ratio
+### Spearman's rank correlation
+```{r cor_test_Cmass_LCratio_Spearman, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$Cmass, x$LCratio, method = "spearman")
+})
+
+```
+
+### Peason's correlation
+```{r cor_test_Cmass_LCratio_Pearson, results='markup'}
+dlply(pyr_all_raw, .(horizon), function(x){
+  cor.test(x$Cmass, 1/(x$LCratio))
+})
+
+```
+
