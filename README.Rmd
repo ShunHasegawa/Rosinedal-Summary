@@ -1,0 +1,25 @@
+---
+title: "Rosinedal soi CN analysis"
+author: "Shun Hasegawa"
+date: "8/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This repository stores the R scripts and data to reproduced the results presented in the manusciprt in prep.
+
+# File description
+
+## R scripts
+
+## Data
+
+## Session information
+```{r sessioninfo, echo=FALSE, message=FALSE}
+source("R/packages.R")
+sessionInfo()
+```
+
