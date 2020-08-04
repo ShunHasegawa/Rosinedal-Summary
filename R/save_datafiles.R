@@ -8,6 +8,7 @@ pyr_litter_raw_data <- pyr_litter_raw_area %>%
                            ifelse(category %in% c("chlorophyll", "vitamin", "steroid", "hopanoid"), "Others",
                                   as.character(category)))) %>% 
   select(id, horizon, category, compound, area) %>% 
+  rename(peak_area = area) %>% 
   arrange(horizon, as.numeric(as.character(id)))
 write.csv(pyr_litter_raw_data, "Output/Data/Manuscript/Pyrolysis_chromatogram_Lhoriz.csv", row.names = FALSE)
 
@@ -30,7 +31,7 @@ nmr_intg_raw_data <- nmr_intg_raw %>%
          horizon = mapvalues(layer, c("Litter", "Humus"), paste(c("L", "F/H"), "horizon"))) %>% 
   select(id, horizon, one_of(NMR_compounds)) %>% 
   arrange(horizon, as.numeric(as.character(id)))
-write.csv(pyr_humus_raw_data, "Output/Data/Manuscript/NMR_spectra_relative_abund.csv", row.names = FALSE)
+write.csv(nmr_intg_raw_data, "Output/Data/Manuscript/NMR_spectra_relative_abund.csv", row.names = FALSE)
 
 # IRMS data
 irms_data <- irms_dd %>% 
