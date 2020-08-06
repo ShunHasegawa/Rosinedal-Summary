@@ -196,19 +196,19 @@ ggsavePP("Output/Figs/Composition_Pyr_NMR", plot = comp_prop_p,
 
 # Pyrolysis
 pyr_litter_rda_site <- pyr_litter %>% 
-  mutate(PYR_RDA1 = data.frame(scores(pyr_litter_rda)$sites)[, 1],
+  mutate(PYR_RDA1 = as.vector(scores(pyr_litter_rda, display = "sites", choices = 1, scaling = 3)),
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, PYR_RDA1)
-pyr_litter_rda_sp <- data.frame(scores(pyr_litter_rda)$species) %>% 
+pyr_litter_rda_sp <-data.frame(scores(pyr_litter_rda, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(pyr_comp = row.names(.)) %>% 
   arrange(RDA1)
 
 # NMR
 nmr_litter_rda_site <- nmr_litter %>% 
-  mutate(NMR_RDA1 = data.frame(scores(nmr_litter_rda)$sites)[, 1],
+  mutate(NMR_RDA1 = as.vector(scores(nmr_litter_rda, display = "sites", choices = 1, scaling = 3)),
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, NMR_RDA1)
-nmr_litter_rda_sp   <- data.frame(scores(nmr_litter_rda)$species) %>% 
+nmr_litter_rda_sp   <- data.frame(scores(nmr_litter_rda, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(nmr_comp = row.names(.),
          nmr_comp2 = mapvalues(nmr_comp, 
                               c("alkylC" , "meth_N_alkylC", "O_alkylC", "di_O_alkylC", "aromatic", "O_aromaticC", "carbonylC"),
@@ -218,8 +218,12 @@ nmr_litter_rda_sp   <- data.frame(scores(nmr_litter_rda)$species) %>%
 # Combine two
 litter_rda_nmr_pyr <- left_join(nmr_litter_rda_site, pyr_litter_rda_site)
 
-litter_pyrlim <- with(litter_rda_nmr_pyr, c(min(PYR_RDA1) * 1.01, max(PYR_RDA1) * 1.01))
-litter_nmrlim <- with(litter_rda_nmr_pyr, c(min(NMR_RDA1) * 1.01, max(NMR_RDA1) * 1.01))
+# define axis limits
+litter_pyr_rda_val <- c(litter_rda_nmr_pyr$PYR_RDA1, pyr_litter_rda_sp$RDA1)
+litter_nmr_rda_val <- c(litter_rda_nmr_pyr$NMR_RDA1, nmr_litter_rda_sp$RDA1)
+
+litter_pyrlim <- c(min(litter_pyr_rda_val) * 1.01, max(litter_pyr_rda_val) * 1.01)
+litter_nmrlim <- c(min(litter_nmr_rda_val) * 1.01, max(litter_nmr_rda_val) * 1.01)
 
 
 # NMR RDA1 vs Pyr RDA1
@@ -244,7 +248,7 @@ litter_rda_p <- ggplot(litter_rda_nmr_pyr, aes(x = PYR_RDA1, y = NMR_RDA1, fill 
         plot.margin = margin(t = 0, r = 0, b = .5, l = .5, unit = "line")) 
 
 # sp loading for NMR
-litter_rda_nmrsp_p <- ggplot(nmr_litter_rda_sp, aes(x = 1, y = RDA1 * 3, label = nmr_comp2)) +
+litter_rda_nmrsp_p <- ggplot(nmr_litter_rda_sp, aes(x = 1, y = RDA1, label = nmr_comp2)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0) +
@@ -260,7 +264,7 @@ litter_rda_nmrsp_p <- ggplot(nmr_litter_rda_sp, aes(x = 1, y = RDA1 * 3, label =
         plot.margin = margin(t = 0, r = 0, b = .5, l = 0, unit = "line"))
 
 # sp loading for Pyrolysis
-litter_rda_pyrsp_p <- ggplot(pyr_litter_rda_sp, aes(x = 1, y = RDA1 * 1.3, label = pyr_comp)) +
+litter_rda_pyrsp_p <- ggplot(pyr_litter_rda_sp, aes(x = 1, y = RDA1, label = pyr_comp)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0, angle = 90) +
@@ -298,19 +302,19 @@ dev.off()
 
 # Pyrolysis
 pyr_humus_rda_site <- pyr_humus %>% 
-  mutate(PYR_RDA1 = data.frame(scores(pyr_humus_rda)$sites)[, 1],
+  mutate(PYR_RDA1 = as.vector(scores(pyr_humus_rda, display = "site", choices = 1, scaling = 3)),
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, PYR_RDA1)
-pyr_humus_rda_sp <- data.frame(scores(pyr_humus_rda)$species) %>% 
+pyr_humus_rda_sp <- data.frame(scores(pyr_humus_rda, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(pyr_comp = row.names(.)) %>% 
   arrange(RDA1)
 
 # NMR
 nmr_humus_rda_site <- nmr_humus %>% 
-  mutate(NMR_RDA1 = data.frame(scores(nmr_humus_rda)$sites)[, 1],
+  mutate(NMR_RDA1 = as.vector(scores(nmr_humus_rda, display = "site", choices = 1, scaling = 3)),
          id       = as.character(id)) %>% 
   select(id, location2, leaf_d15N, NMR_RDA1)
-nmr_humus_rda_sp   <- data.frame(scores(nmr_humus_rda)$species) %>% 
+nmr_humus_rda_sp   <- data.frame(scores(nmr_humus_rda, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(nmr_comp = row.names(.),
          nmr_comp2 = mapvalues(nmr_comp, 
                                c("alkylC" , "meth_N_alkylC", "O_alkylC", "di_O_alkylC", "aromatic", "O_aromaticC", "carbonylC"),
@@ -319,9 +323,11 @@ nmr_humus_rda_sp   <- data.frame(scores(nmr_humus_rda)$species) %>%
 # Combine two
 humus_rda_nmr_pyr <- left_join(nmr_humus_rda_site, pyr_humus_rda_site)
 
-# pyrlim <- with(humus_rda_nmr_pyr, c(min(PYR_RDA1) * 1.01, max(PYR_RDA1) * 1.03))
-humus_pyrlim <- with(humus_rda_nmr_pyr, c(min(PYR_RDA1) * 1.01, max(PYR_RDA1) * 1.01))
-humus_nmrlim <- with(humus_rda_nmr_pyr, c(min(NMR_RDA1) * 1.01, max(NMR_RDA1) * 1.01))
+# define axis limits
+humus_pyr_rda_val <- c(humus_rda_nmr_pyr$PYR_RDA1, pyr_humus_rda_sp$RDA1)
+humus_nmr_rda_val <- c(humus_rda_nmr_pyr$NMR_RDA1, nmr_humus_rda_sp$RDA1)
+humus_pyrlim <- c(min(humus_pyr_rda_val) * 1.01, max(humus_pyr_rda_val) * 1.01)
+humus_nmrlim <- c(min(humus_nmr_rda_val) * 1.01, max(humus_nmr_rda_val) * 1.01)
 
 
 # NMR RDA1 vs Pyr RDA1
@@ -341,7 +347,7 @@ humus_rda_p <- ggplot(humus_rda_nmr_pyr, aes(x = PYR_RDA1, y = NMR_RDA1, fill = 
         plot.margin = margin(t = 0, r = 0, b = .5, l = .5, unit = "line")) 
 
 # sp loading for NMR
-humus_rda_nmrsp_p <- ggplot(nmr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.8, label = nmr_comp2)) +
+humus_rda_nmrsp_p <- ggplot(nmr_humus_rda_sp, aes(x = 1, y = RDA1, label = nmr_comp2)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0) +
@@ -357,7 +363,7 @@ humus_rda_nmrsp_p <- ggplot(nmr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.8, label =
         plot.margin = margin(t = 0, r = 0, b = .5, l = 0, unit = "line"))
 
 # sp loading for Pyrolysis
-humus_rda_pyrsp_p <- ggplot(pyr_humus_rda_sp, aes(x = 1, y = RDA1 * 1.1, label = pyr_comp)) +
+humus_rda_pyrsp_p <- ggplot(pyr_humus_rda_sp, aes(x = 1, y = RDA1, label = pyr_comp)) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = .92) +
   geom_text(aes(x = .92), size = 3, label = "-", hjust = 0, angle = 90) +
@@ -395,7 +401,7 @@ rda_nmr_pyr_p <- ggarrange(litter_rda_pyrsp_p, blank_ggplot,
                            labels = c("(a) L horizon", "", "(b) F/H horizon", rep("", 5)),
                            label.args = list(gp = grid::gpar(cex = 1), hjust = -.1, vjust = 1.5),
                            draw = FALSE)
-cairo_pdf(filename = "Output/Figs/RDA_Pyr_NMR.pdf", width = 6.5, height = 3)
+cairo_pdf(filename = "Output/Figs/RDA_Pyr_NMR2.pdf", width = 6.5, height = 3)
 rda_nmr_pyr_p
 dev.off()
 

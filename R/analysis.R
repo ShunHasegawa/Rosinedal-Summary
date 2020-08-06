@@ -184,7 +184,7 @@ anova(pyr_litter_rda_f, nperm = 4999)
 # Species loading
 pyr_litter_sp_score <- ldply(list(full = pyr_litter_rda, fertilised = pyr_litter_rda_f),
                             function(x){
-                              d <- data.frame(scores(x)$species) %>% 
+                              d <- data.frame(scores(x, display = "species", choices = 1, scaling = 3)) %>% 
                                 mutate(compound = row.names(.)) %>% 
                                 select(compound, RDA1)
                             }, .id = "dataset") %>% 
@@ -217,7 +217,7 @@ anova(pyr_humus_rda_f, nperm = 4999)
 # Species loading
 pyr_humus_sp_score <- ldply(list(full = pyr_humus_rda, fertilised = pyr_humus_rda_f),
                             function(x){
-                              d <- data.frame(scores(x)$species) %>% 
+                              d <- data.frame(scores(x, display = "species", choices = 1, scaling = 3)) %>% 
                                 mutate(compound = row.names(.)) %>% 
                                 select(compound, RDA1)
                             }, .id = "dataset") %>% 
@@ -283,7 +283,7 @@ anova(nmr_litter_rda_f, nperm = 4999)
 # Species loading
 nmr_litter_sp_score <- ldply(list(full = nmr_litter_rda, fertilised = nmr_litter_rda_f),
                             function(x){
-                              d <- data.frame(scores(x)$species) %>% 
+                              d <- data.frame(scores(x, display = "species", choices = 1, scaling = 3)) %>% 
                                 mutate(compound = row.names(.)) %>% 
                                 select(compound, RDA1)
                             }, .id = "dataset") %>% 
@@ -314,7 +314,7 @@ anova(nmr_humus_rda_f, nperm = 4999)
 # Species loading
 nmr_humus_sp_score <- ldply(list(full = nmr_humus_rda, fertilised = nmr_humus_rda_f),
                              function(x){
-                               d <- data.frame(scores(x)$species) %>% 
+                               d <- data.frame(scores(x, display = "species", choices = 1, scaling = 3)) %>% 
                                  mutate(compound = row.names(.)) %>% 
                                  select(compound, RDA1)
                              }, .id = "dataset") %>% 

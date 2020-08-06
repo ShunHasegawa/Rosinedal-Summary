@@ -55,7 +55,7 @@ pyr_litter_rda_sp %>%
 knitr::kable(., caption = "Sp scores on pyrolysis for L horizon")
 
 knitr::kable(anova(pyr_litter_rda_f, nperm = 4999), caption = "RDA on pyrolysis for L horizon (fertilised)")
-data.frame(scores(pyr_litter_rda_f)$species) %>%
+data.frame(scores(pyr_litter_rda_f, display = "species", choices = 1, scaling = 3)) %>%
   mutate(pyr_comp = row.names(.),
          RDA1 = round(RDA1, 3)) %>%
   select(pyr_comp, RDA1) %>%
@@ -73,7 +73,7 @@ pyr_humus_rda_sp %>%
 knitr::kable(., caption = "Sp scores on pyrolysis for F/H horizon")
 
 knitr::kable(anova(pyr_humus_rda_f, nperm = 4999), caption = "RDA on pyrolysis for F/H horizon (fertilised)")
-data.frame(scores(pyr_humus_rda_f)$species) %>%
+data.frame(scores(pyr_humus_rda_f, display = "species", choices = 1, scaling = 3)) %>%
   mutate(pyr_comp = row.names(.),
          RDA1 = round(RDA1, 3)) %>%
   select(pyr_comp, RDA1) %>%
@@ -103,7 +103,7 @@ nmr_litter_rda_sp %>%
   knitr::kable(., caption = "Sp scores on RDA for L horizon")
 
 knitr::kable(anova(nmr_litter_rda_f, nperm = 4999), caption = "RDA on NMR for L horizon (only fertilised plots)")
-data.frame(scores(nmr_litter_rda_f)$species) %>% 
+data.frame(scores(nmr_litter_rda_f, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(nmr_comp = row.names(.),
          RDA1 = round(RDA1, 3)) %>% 
   select(nmr_comp, RDA1) %>% 
@@ -122,7 +122,7 @@ nmr_humus_rda_sp %>%
   knitr::kable(., caption = "Sp scores on RDA for F/H horizon")
 
 knitr::kable(anova(nmr_humus_rda_f, nperm = 4999), caption = "RDA on NMR for F/H horizon (only fertilised plots)")
-data.frame(scores(nmr_humus_rda_f)$species) %>% 
+data.frame(scores(nmr_humus_rda_f, display = "species", choices = 1, scaling = 3)) %>% 
   mutate(nmr_comp = row.names(.),
          RDA1 = round(RDA1, 3)) %>% 
   select(nmr_comp, RDA1) %>% 
